@@ -1,29 +1,18 @@
 #!/bin/bash
 
-ip neigh flush all;
-for (( i=1; i<=255; i++ ))
-do
-	ping -c 1 192.168.1."$i" > /dev/null 2>&1 &
-done
+#This script is designed to run multiple commands on all the nodes
+#Target servers can be changed by using ${x2200[*]} or ${v20z[*]} arrays in place of ${all[*]}
 
-x2200=(`arp -n | egrep '00:1b:24|00:16:36' | egrep -o '192\.168\.1\.[0-9]*'`)
-v20z=(`arp -n | egrep '00:09:3d' | egrep -o '192\.168\.1\.[0-9]*' | egrep -v '192.168.1.1$'`)
-all=(${x2200[*]} ${v20z[*]})
-
-echo "X2200 running: "${#x2200[*]};
-echo "v20z running: "${#v20z[*]};
-
-echo "total running: "${#all[*]};
+source ./get_nodes.sh
+get_nodes true;
 
 cmd="
-	poweroff;
+	nproc;
 "
 for ip in ${all[*]}; do
 	case "${exception[@]}" in  *"$ip"*) continue ;; esac
 
-
 	ssh -oStrictHostKeyChecking=no root@$ip "$cmd" &
-
 done
 
 #ssh-copy-id -oStrictHostKeyChecking=no root@"$ip";
