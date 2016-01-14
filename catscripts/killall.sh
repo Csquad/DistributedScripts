@@ -7,10 +7,12 @@ source ./get_nodes.sh
 get_nodes true;
 
 cmd="
-mount -a;
+killall MATLAB;
 "
 for ip in ${all[*]}; do
 	case "${exception[@]}" in  *"$ip"*) continue ;; esac
 
-	ssh -oStrictHostKeyChecking=no root@$ip "$cmd" &
+	ssh -oStrictHostKeyChecking=no ecp8266@$ip "$cmd" &
 done
+
+killall MATLAB;

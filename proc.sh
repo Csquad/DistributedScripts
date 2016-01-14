@@ -6,11 +6,20 @@
 source ./get_nodes.sh
 get_nodes true;
 
+proc="MATLAB"
+
 cmd="
-mount -a;
+ps ax -o %cpu,comm | grep $proc
 "
+
+echo "" > tmp.proc;
+
 for ip in ${all[*]}; do
 	case "${exception[@]}" in  *"$ip"*) continue ;; esac
 
-	ssh -oStrictHostKeyChecking=no root@$ip "$cmd" &
+	ssh -oStrictHostKeyChecking=no root@$ip "$cmd" | sed "s/.*/\0 $ip/" >> tmp.proc
 done
+
+sort -n -r tmp.proc;
+rm -rf tmp.proc;
+

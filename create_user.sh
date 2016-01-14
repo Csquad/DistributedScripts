@@ -1,7 +1,7 @@
 #Example array
 #users=(eih1515 eyd2562 eyo3005 ekd4042 ejb1347);
 
-users=(test);
+users=(ecp8266);
 for user in ${users[*]}; do
 	echo "Creating user "$user".";
 	useradd -m "$user"

@@ -7,7 +7,7 @@ source ./get_nodes.sh
 get_nodes true;
 
 cmd="
-mount -a;
+yum -y install mesa-dri-drivers libXt libXext tcsh;
 "
 for ip in ${all[*]}; do
 	case "${exception[@]}" in  *"$ip"*) continue ;; esac

@@ -7,10 +7,11 @@ source ./get_nodes.sh
 get_nodes true;
 
 cmd="
-mount -a;
+yum -y install gcc-c++;
 "
 for ip in ${all[*]}; do
 	case "${exception[@]}" in  *"$ip"*) continue ;; esac
 
-	ssh -oStrictHostKeyChecking=no root@$ip "$cmd" &
+	echo $ip
+	ssh -oStrictHostKeyChecking=no root@$ip "$cmd"
 done
